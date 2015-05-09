@@ -1,5 +1,5 @@
 '''
-Convert Hunter's Trix FLAC downloads to lossless iTunes (ALAC/.m4a) audio, with metadata and convert art.
+Convert Hunter's Trix FLAC downloads to lossless iTunes (ALAC/.m4a) audio, with metadata and cover art.
 
 Correlate filenames in directory with track listings in data file `data.txt`,
 then set as much FLAC metadata as possible, add cover art, convert to ALAC (.m4a)
