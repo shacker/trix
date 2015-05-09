@@ -16,7 +16,11 @@ There are more than 100 Hunter matrixes being traded as legal torrents on [etree
 
 Unfortunately, there are two problems: 1) They're all in FLAC format, instead of Apple Lossleess (ALAC). Since most people use iTunes, this means most people must go through a manual transcoding process; 2) The first 94 shows are missing embedded metadata and cover art (the cover art is beautiful). I'm obsessive about having perfect metadata and cover art in every single track in my collection, which meant manually copying and pasting metadata (including track and disc numbers, show dates and venues, track and album titles, etc.) from text files in the download directory into individual track files. It was taking 20+ minutes to process each album. So I decided to automate the process with this python script. 
 
-I had originally planned to share the completed ALAC versions of the collection back to the community, but Hunter talked me out of it. So I'm doing the next best thing here and sharing the conversion script. With everything installed and working, I was able to cut the processing time down from ~20 minutes per recording to 1 minute. The final results are added to your iTunes collection automagically.
+I had originally planned to share the completed ALAC versions of the collection back to the community, but Hunter talked me out of it. So I'm doing the next best thing here and sharing the conversion script. 
+
+![HT58](http://birdhouse.org/software/wp-content/uploads/2015/05/trix.jpg)
+
+With everything installed and working, I was able to cut the processing time down from ~20 minutes per recording to 1 minute. The final results are added to your iTunes collection automagically.
 
 ![HT58](http://fc07.deviantart.net/fs71/f/2013/292/6/4/ht_vol__58__booklet_cover_by_hseamons-d2z55zf.jpg)
 
