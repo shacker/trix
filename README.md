@@ -24,11 +24,15 @@ I had originally planned to share the completed ALAC versions of the collection 
 
 You will need some comfort working in the Terminal, installing command-line tools, and running Python scripts. I'm sorry I can't offer support for these techniques.
 
-Copy `trix.py` into a folder somewhere on your python path. Try `/usr/local/bin` if in doubt. Then you'll need to make sure these three tools are installed and working:
+Make sure these three tools are installed and working:
 
 - [metaflac](https://xiph.org/flac/documentation_tools_metaflac.html) CLI binary
 - [MP4v2](https://mp4v2.googlecode.com/svn/doc/1.9.0/ToolGuide.html) for adding cover art (mp4art)
 - [FFMpeg](https://www.ffmpeg.org/) to convert from .flac to .m4a
+
+Copy `trix.py` into a folder somewhere on your python path. Try `/usr/local/bin` if in doubt. 
+
+Edit the `dir` and `itunes_dir` vars near the top of the file to match the path to your "process" dir and the path to your "Automatically Add to iTunes" dir.
 
 ### Workflow
 
