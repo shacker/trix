@@ -28,12 +28,12 @@ artist = "Grateful Dead"
 
 # Ensure we have the data file and cover art ready. Bail if not.
 if not os.path.isfile("data.txt"):
-	print("Metadata text file must be named data.txt. Exiting.")
-	sys.exit()
+    print("Metadata text file must be named data.txt. Exiting.")
+    sys.exit()
 
 if not os.path.isfile("cover.jpg"):
-	print("Cover art file must be named cover.jpg. Exiting.")
-	sys.exit()
+    print("Cover art file must be named cover.jpg. Exiting.")
+    sys.exit()
 
 
 # ===========================================
@@ -58,7 +58,8 @@ raw_date = lines[3]
 get_date = datetime.datetime.strptime(raw_date, "%B %d, %Y")
 new_date = get_date.strftime("%m/%d/%y")
 year = get_date.year
-albumtitle = "Hunter's Trix Vol. {vol} -- {date} -- {ven} - {loc}".format(vol=volume, date=new_date, ven=venue, loc=location)
+albumtitle = "Hunter's Trix Vol. {vol} -- {date} -- {ven} - {loc}".format(
+    vol=volume, date=new_date, ven=venue, loc=location)
 
 # Show isn't in the data file - have to extract it from one of the filenames.
 # Find all .flac files in dir and grab the first, then strip it out.
@@ -69,63 +70,64 @@ show = re.search("gd(.*)d", fn).group().lstrip("gd").rstrip("d")
 lines = [line.strip() for line in open('data.txt') if line[0] == "d" and " - " in line]
 
 for line in lines:
-	print("Found track specifier in data.txt: {L}".format(L=line))
+    print("Found track specifier in data.txt: {L}".format(L=line))
 
-	# Filenames will be like `gd92-03-20d1t07.flac`. We consider the identifier to be `d1t07`. Get start of line up to first space.
-	identifier = re.search("^.*?\ ", line).group().strip()
+    # Filenames will be like `gd92-03-20d1t07.flac`.
+    # We consider the identifier to be `d1t07`. Get start of line up to first space.
+    identifier = re.search("^.*?\ ", line).group().strip()
 
-	disc = line[1]  # 2nd character is always the disc number (unless there are more than 9 discs, but there aren't)
+    disc = line[1]  # 2nd character is always the disc number (unless there are more than 9 discs, but there aren't)
 
-	# Get first occurence of "t" to find track number. Remove leading "t" and leading "0".
-	track = re.search('t.*?\ ', line).group(0).strip().lstrip("t").lstrip("0")
+    # Get first occurence of "t" to find track number. Remove leading "t" and leading "0".
+    track = re.search('t.*?\ ', line).group(0).strip().lstrip("t").lstrip("0")
 
-	# Title is everything after " - "
-	title = re.search("\ -\ .*$", line).group().lstrip(" - ").strip()
+    # Title is everything after " - "
+    title = re.search("\ -\ .*$", line).group().lstrip(" - ").strip()
 
-	# Predict filename
-	filename = "gd{show}{identifier}.flac".format(show=show, identifier=identifier)
-	print("Predicted filename {f}".format(f=filename))
+    # Predict filename
+    filename = "gd{show}{identifier}.flac".format(show=show, identifier=identifier)
+    print("Predicted filename {f}".format(f=filename))
 
-	print("Identifier: '{i}', Disc: {d}, Track: {tr}, Title '{ti}'".format(i=identifier, d=disc, tr=track, ti=title))
+    print("Identifier: '{i}', Disc: {d}, Track: {tr}, Title '{ti}'".format(i=identifier, d=disc, tr=track, ti=title))
 
-	# Generate full path to file.
-	filepath = "{d}/{f}".format(d=dir, f=filename)
-	outpath = filepath.replace(".flac", ".m4a")
-	
-	# metaflac won't ovewrite data; erase anything present
-	print("Removing old metadata from {f}".format(f=filename))
-	call(["metaflac", "--remove-all-tags", filepath])
+    # Generate full path to file.
+    filepath = "{d}/{f}".format(d=dir, f=filename)
+    outpath = filepath.replace(".flac", ".m4a")
 
-	# Write new metadata
-	print("Writing new metadata to {f}".format(f=filename))
-	call(["metaflac", "--set-tag=ARTIST={a}".format(a=artist), filepath])
-	call(["metaflac", "--set-tag=DISCNUMBER={d}".format(d=disc), filepath])
-	call(["metaflac", "--set-tag=TRACKNUMBER={t}".format(t=track), filepath])
-	call(["metaflac", "--set-tag=TITLE={t}".format(t=title), filepath])
-	call(["metaflac", "--set-tag=ALBUM={a}".format(a=albumtitle), filepath])
-	call(["metaflac", "--set-tag=DATE={y}".format(y=year), filepath])
-	call(["metaflac", "--set-tag=GENRE={g}".format(g=genre), filepath])
+    # metaflac won't ovewrite data; erase anything present
+    print("Removing old metadata from {f}".format(f=filename))
+    call(["metaflac", "--remove-all-tags", filepath])
 
-	# Convert to ALAC
-	basefile = filename.replace(".flac", "")
-	print("Converting to ALAC: {b}.flac -> {b}.m4a".format(b=basefile))
-	call(["ffmpeg", "-i", filename, "-acodec", "alac", "-loglevel", "warning", outpath])
+    # Write new metadata
+    print("Writing new metadata to {f}".format(f=filename))
+    call(["metaflac", "--set-tag=ARTIST={a}".format(a=artist), filepath])
+    call(["metaflac", "--set-tag=DISCNUMBER={d}".format(d=disc), filepath])
+    call(["metaflac", "--set-tag=TRACKNUMBER={t}".format(t=track), filepath])
+    call(["metaflac", "--set-tag=TITLE={t}".format(t=title), filepath])
+    call(["metaflac", "--set-tag=ALBUM={a}".format(a=albumtitle), filepath])
+    call(["metaflac", "--set-tag=DATE={y}".format(y=year), filepath])
+    call(["metaflac", "--set-tag=GENRE={g}".format(g=genre), filepath])
 
-	# Add cover art
-	call(["mp4art", "--add", "cover.jpg", outpath])
+    # Convert to ALAC
+    basefile = filename.replace(".flac", "")
+    print("Converting to ALAC: {b}.flac -> {b}.m4a".format(b=basefile))
+    call(["ffmpeg", "-i", filename, "-acodec", "alac", "-loglevel", "warning", outpath])
 
-	print("")
+    # Add cover art
+    call(["mp4art", "--add", "cover.jpg", outpath])
 
-# Move m4a files to iTunes 
+    print("\n")
+
+# Move m4a files to iTunes
 for file in os.listdir('.'):
     if fnmatch.fnmatch(file, '*.m4a'):
-		print("Sending file {f} to iTunes".format(f=file))
-		move(file, itunes_dir)
+        print("Sending file {f} to iTunes".format(f=file))
+        move(file, itunes_dir)
 
 # Clean up the rest
 files = os.listdir('.')
 for filename in files:
-	os.remove(os.path.join(dir, filename))
-	print("Deleting {f}".format(f=filename))
+    os.remove(os.path.join(dir, filename))
+    print("Deleting {f}".format(f=filename))
 
 print("Done.")
